@@ -2,9 +2,7 @@
 
 This project covers several software:
 oop, singlton and dependency injection, promise, async await, mongo db (NoSQL), object relational mapping (ORM), routing, 
-authentication(jwt), rest api, static typing and generics with typescript.
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+authentication(jwt), middlewares, rest api, static typing and generics with typescript.
 
 ## Available Scripts
 
