@@ -14,6 +14,7 @@ import RecipeService from './src/services/RecipeService';
 import { Recipe } from './src/models/mongoose/Recipe';
 import { Login } from './src/models/mongoose/Login';
 import { authentication } from './src/middlewares/auth';
+import cors from './src/middlewares/cors';
 
 declare global {
     var Container: ContainerBuilder;
@@ -37,6 +38,9 @@ database.once('connected', () => {
 /** App Configuration */
 const app = express();
 
+/** CORS middleware */
+app.use(cors());
+
 /** Parse the request */
 app.use(express.urlencoded({ extended: true }));
 /** Takes care of JSON data */
@@ -51,7 +55,7 @@ app.use('/api/user', UserAuthenticationRoute);
 app.use('/api/navigation', NavigationRoute);
 app.get('/', (req: Request, res: Response) => {
     res.send({ 'message': 'ok' });
-})
+});
 
 /* Error handler middleware */
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
@@ -63,7 +67,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 /** Start Server */
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
 });

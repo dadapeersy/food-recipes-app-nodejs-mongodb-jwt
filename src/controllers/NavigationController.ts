@@ -7,7 +7,7 @@ class NavigationController {
     static async getAllNavsCategory(req: Request, res: Response, next: NextFunction) {
         const configResponse = new ConfigResponse();
         configResponse.errorMsg = "getting All Navs Category";
-        configResponse.callback = global.Container.get('navigationService').getAllCategory.bind(global.Container.get('navigationService'));
+        configResponse.callback = global.Container.get('navigationService').getAllItems.bind(global.Container.get('navigationService'));
         await helperUtil.processResponse(configResponse, res, next);
     }
 

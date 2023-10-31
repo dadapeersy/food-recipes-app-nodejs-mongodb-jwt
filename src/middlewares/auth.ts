@@ -7,7 +7,7 @@ export interface CustomRequest extends Request {
 
 export const authentication = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if (req.path !== '/api/user/login') {
+        if (req.path !== '/api/user/login' && req.path !== '/api/navigation/') {
             const token = req.header('Authorization')?.replace('Bearer ', '');
 
             if (!token) {
