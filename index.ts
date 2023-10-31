@@ -70,8 +70,8 @@ app.listen(port, () => {
 
 /** Register Services */
 global.Container = new ContainerBuilder();
-global.Container.register('foodService', FoodService).addArgument(Food);
 global.Container.register('recipeService', RecipeService).addArgument(Recipe);
+global.Container.register('foodService', FoodService).addArgument(Food).addArgument(global.Container.get('recipeService'));
 global.Container.register('navigationService', NavigationService).addArgument(Nav);
 global.Container.register('userAuthenticationService', UserAuthenticationService).addArgument(Login);
 

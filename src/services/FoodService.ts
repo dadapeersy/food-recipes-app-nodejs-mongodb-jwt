@@ -3,11 +3,31 @@ import DbService from "./DbService";
 import IFood from "../models/IFood";
 import IRecipe from "../models/IRecipe";
 import { IFoodService } from "./IFoodService";
+import RecipeService from "./RecipeService";
 
 class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecipe> {
 
-    constructor(model: Model<IFood>) {
+    private _recipeService!: RecipeService;
+
+    constructor(model: Model<IFood>, recipeService: RecipeService) {
         super(model)
+        this.recipeService = recipeService;
+    }
+
+    /**
+     * Getter recipeService
+     * @return {RecipeService}
+     */
+    private get recipeService(): RecipeService {
+        return this._recipeService;
+    }
+
+    /**
+     * Setter recipeService
+     * @param {RecipeService} value
+     */
+    private set recipeService(value: RecipeService) {
+        this._recipeService = value;
     }
 
     public async getAllFoodsCategory(): Promise<IFood[]> {
@@ -50,8 +70,8 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecip
 
     public async getAllRecipesByFoodCategory(id: string): Promise<IRecipe[]> {
         try {
-            // need to paging
-            const getAllRecipes = await global.Container.get('recipeService').getAllItems();
+            // required pagination 
+            const getAllRecipes = await this.recipeService.getAllItems();
             return getAllRecipes.filter((item: IRecipe) => item.categoryId === id);
         }
         catch (error) {
@@ -61,7 +81,7 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecip
 
     public async addRecipeByFoodCategory(payload: IRecipe): Promise<IRecipe> {
         try {
-            return await global.Container.get('recipeService').addItem(payload);
+            return await this.recipeService.addItem(payload);
         }
         catch (error) {
             throw error;
