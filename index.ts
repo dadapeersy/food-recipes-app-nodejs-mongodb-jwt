@@ -15,6 +15,10 @@ import { Recipe } from './src/models/mongoose/Recipe';
 import { Login } from './src/models/mongoose/Login';
 import { authentication } from './src/middlewares/auth';
 import cors from './src/middlewares/cors';
+import morgan from 'morgan';
+import * as fs from 'fs';
+import path from 'path';
+
 
 declare global {
     var Container: ContainerBuilder;
@@ -41,8 +45,13 @@ const app = express();
 /** CORS middleware */
 app.use(cors());
 
+/** HTTP request logger middleware */
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })// create a write stream (in append mode)
+app.use(morgan('combined', { stream: accessLogStream }))
+
 /** Parse the request */
 app.use(express.urlencoded({ extended: true }));
+
 /** Takes care of JSON data */
 app.use(express.json());
 
