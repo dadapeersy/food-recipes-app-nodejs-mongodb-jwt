@@ -35,11 +35,17 @@ class Foodcontroller {
         await helperUtil.processResponse(configResponse, res, next);
     }
 
-    static async getAllRecipesByFoodCategory(req: Request, res: Response, next: NextFunction) {
+    static async getRecipesByFoodPage(req: Request, res: Response, next: NextFunction) {
         const configResponse = new ConfigResponse();
         configResponse.errorMsg = "getting All Recipes By Food Category";
         configResponse.id = req.params.id;
-        configResponse.callback = global.Container.get('foodService').getAllRecipesByFoodCategory.bind(global.Container.get('foodService'));
+        if (req.query.page !== undefined) {
+            configResponse.page = req.query.page.toString();
+        }
+        if (req.query.limit !== undefined) {
+            configResponse.limit = req.query.limit.toString();
+        }
+        configResponse.callback = global.Container.get('foodService').getRecipesByFoodPage.bind(global.Container.get('foodService'));
         await helperUtil.processResponse(configResponse, res, next);
     }
 

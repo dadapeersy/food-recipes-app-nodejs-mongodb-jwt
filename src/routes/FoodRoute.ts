@@ -8,7 +8,7 @@ router.post('/', FoodController.addFoodCategory);
 router.delete('/:id', FoodController.deleteFoodCategory);
 
 /** Recipes Http request */
-router.get('/:id/recipes', FoodController.getAllRecipesByFoodCategory);
+router.get('/:id/recipes', FoodController.getRecipesByFoodPage);
 router.post('/:id/recipes', FoodController.AddRecipeByFoodCategory);
 
 export default router;

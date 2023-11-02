@@ -15,7 +15,12 @@ class helperUtil {
             if (config.body === undefined && config.id === undefined) {
                 res.status(200).send(await config.callback());
             } else if (config.id !== undefined) {
-                res.status(200).send(await config.callback(config.id));
+                if (config.page !== undefined && config.limit !== undefined) {
+                    res.status(200).send(await config.callback(config.page, config.limit, config.id));
+                } else {
+                    res.status(200).send(await config.callback(config.id));
+
+                }
             } else if (config.body !== undefined) {
                 res.status(200).send(await config.callback(config.body));
             }

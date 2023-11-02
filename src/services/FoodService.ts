@@ -4,6 +4,7 @@ import IFood from "../models/IFood";
 import IRecipe from "../models/IRecipe";
 import { IFoodService } from "./IFoodService";
 import RecipeService from "./RecipeService";
+import Page from "../models/Page";
 
 class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecipe> {
 
@@ -70,9 +71,17 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecip
 
     public async getAllRecipesByFoodCategory(id: string): Promise<IRecipe[]> {
         try {
-            // required pagination 
             const getAllRecipes = await this.recipeService.getAllItems();
             return getAllRecipes.filter((item: IRecipe) => item.categoryId === id);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    public async getRecipesByFoodPage(page: string, limit: string, id?: string): Promise<Page<IRecipe>> {
+        try {
+            return await this.recipeService.getItemsByPage(page, limit, id);
         }
         catch (error) {
             throw error;

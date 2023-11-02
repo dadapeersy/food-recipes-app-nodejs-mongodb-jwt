@@ -4,5 +4,6 @@ export interface IFoodService<FoodType, RecipeType> {
     deleteFoodCategory(id: number): Promise<string>
     addFoodCategory(payload: FoodType): Promise<FoodType>
     getAllRecipesByFoodCategory(id: string): Promise<RecipeType[]>
+    //getRecipesByFoodPage(page: string, limit: string, id?: string): Promise<RecipeType[]>
     addRecipeByFoodCategory(payload: FoodType): Promise<RecipeType>
 }

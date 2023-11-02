@@ -1,4 +1,5 @@
 import { Model } from "mongoose";
+import Page from "../models/Page";
 
 abstract class DbService<Type> {
     private _model!: Model<Type>;
@@ -31,6 +32,42 @@ abstract class DbService<Type> {
             throw error;
         }
 
+    }
+
+    protected async getAllByPage(page: string, limit: string, itemId?: string): Promise<Page<Type>> {
+        try {
+            const filterObj: any = {};
+
+            const limitRows: number = limit !== undefined ? (limit as unknown as number) : 0;
+            let pageId: number = (page as unknown as number);
+
+            if (itemId !== undefined) {
+                filterObj['categoryId'] = itemId;
+            }
+
+            if (limitRows === 0) {
+                pageId = 1;
+            }
+
+            // get total documents in the items collection 
+            const count = await this.model.find(filterObj).count();
+
+            // execute query with page and limit values
+            const items = await this.model.find(filterObj)
+                .limit(limitRows * 1)
+                .skip((pageId - 1) * limitRows)
+                .exec()
+
+            const result = new Page<Type>();
+            result.items = items;
+            result.totalPages = limitRows !== 0 ? Math.ceil(count / limitRows) : 1;
+            result.currentPage = pageId;
+
+            return result;
+        }
+        catch (error) {
+            throw error;
+        }
     }
 
     protected async getById(id: number): Promise<Type | null> {
