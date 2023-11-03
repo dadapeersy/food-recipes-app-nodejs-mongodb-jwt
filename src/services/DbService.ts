@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, UpdateQuery } from "mongoose";
 import Page from "../models/Page";
 
 abstract class DbService<Type> {
@@ -92,6 +92,15 @@ abstract class DbService<Type> {
         const data = new this.model(payload);
         try {
             return (await data.save()).toObject();
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    protected async put(id: number, payload: UpdateQuery<Type>): Promise<Type | null> {
+        try {
+            return await this.model.findByIdAndUpdate(id, payload, { new: true });
         }
         catch (error) {
             throw error;

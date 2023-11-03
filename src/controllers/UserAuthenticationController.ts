@@ -6,7 +6,6 @@ class UserAuthenticationController {
 
     static async login(req: Request, res: Response, next: NextFunction) {
         const configResponse = new ConfigResponse();
-        configResponse.errorMsg = "login";
         configResponse.body = req.body;
         configResponse.callback = global.Container.get('userAuthenticationService').login.bind(global.Container.get('userAuthenticationService'));
         await helperUtil.processResponse(configResponse, res, next);

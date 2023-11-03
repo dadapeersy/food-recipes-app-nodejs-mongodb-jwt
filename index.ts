@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import FoodRouter from './src/routes/FoodRoute';
+import RecipeRouter from './src/routes/RecipeRouter';
 import UserAuthenticationRoute from './src/routes/UserAuthenticationRoute';
 import NavigationRoute from './src/routes/NavigationRoute';
 import { ContainerBuilder } from 'node-dependency-injection'
@@ -60,6 +61,7 @@ app.use(authentication);
 
 /** Routes */
 app.use('/api/foods', FoodRouter);
+app.use('/api/recipes', RecipeRouter);
 app.use('/api/user', UserAuthenticationRoute);
 app.use('/api/navigation', NavigationRoute);
 app.get('/', (req: Request, res: Response) => {
@@ -84,7 +86,7 @@ app.listen(port, () => {
 /** Register Services */
 global.Container = new ContainerBuilder();
 global.Container.register('recipeService', RecipeService).addArgument(Recipe);
-global.Container.register('foodService', FoodService).addArgument(Food).addArgument(global.Container.get('recipeService'));
+global.Container.register('foodService', FoodService).addArgument(Food);
 global.Container.register('navigationService', NavigationService).addArgument(Nav);
 global.Container.register('userAuthenticationService', UserAuthenticationService).addArgument(Login);
 

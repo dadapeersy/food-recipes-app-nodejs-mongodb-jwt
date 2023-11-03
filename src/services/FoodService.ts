@@ -1,34 +1,12 @@
 import { Model } from "mongoose";
 import DbService from "./DbService";
 import IFood from "../models/IFood";
-import IRecipe from "../models/IRecipe";
 import { IFoodService } from "./IFoodService";
-import RecipeService from "./RecipeService";
-import Page from "../models/Page";
 
-class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecipe> {
+class FoodService extends DbService<IFood> implements IFoodService<IFood> {
 
-    private _recipeService!: RecipeService;
-
-    constructor(model: Model<IFood>, recipeService: RecipeService) {
+    constructor(model: Model<IFood>) {
         super(model)
-        this.recipeService = recipeService;
-    }
-
-    /**
-     * Getter recipeService
-     * @return {RecipeService}
-     */
-    private get recipeService(): RecipeService {
-        return this._recipeService;
-    }
-
-    /**
-     * Setter recipeService
-     * @param {RecipeService} value
-     */
-    private set recipeService(value: RecipeService) {
-        this._recipeService = value;
     }
 
     public async getAllFoodsCategory(): Promise<IFood[]> {
@@ -69,28 +47,9 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood, IRecip
         }
     }
 
-    public async getAllRecipesByFoodCategory(id: string): Promise<IRecipe[]> {
+    public async updateFoodCategory(id: number, payload: IFood): Promise<IFood | null> {
         try {
-            const getAllRecipes = await this.recipeService.getAllItems();
-            return getAllRecipes.filter((item: IRecipe) => item.categoryId === id);
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-
-    public async getRecipesByFoodPage(page: string, limit: string, id?: string): Promise<Page<IRecipe>> {
-        try {
-            return await this.recipeService.getItemsByPage(page, limit, id);
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-
-    public async addRecipeByFoodCategory(payload: IRecipe): Promise<IRecipe> {
-        try {
-            return await this.recipeService.addItem(payload);
+            return await this.put(id, payload);
         }
         catch (error) {
             throw error;
