@@ -1,15 +1,15 @@
 import { Model } from "mongoose";
 import DbService from "./DbService";
 import IFood from "../models/IFood";
-import { IFoodService } from "./IFoodService";
+import { IListService } from "./IListService";
 
-class FoodService extends DbService<IFood> implements IFoodService<IFood> {
+class FoodService extends DbService<IFood> implements IListService<IFood> {
 
     constructor(model: Model<IFood>) {
         super(model)
     }
 
-    public async getAllFoodsCategory(): Promise<IFood[]> {
+    public async getAllItems(): Promise<IFood[]> {
         try {
             return await this.getAll();
         }
@@ -18,7 +18,7 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood> {
         }
     }
 
-    public async getFoodCategory(id: number): Promise<IFood | null> {
+    public async getItem(id: number): Promise<IFood | null> {
         try {
             return await this.getById(id);
         }
@@ -28,17 +28,7 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood> {
 
     }
 
-    public async deleteFoodCategory(id: number): Promise<string> {
-        try {
-            const deletedFood = await this.deleteById(id);
-            return deletedFood!.name;
-        }
-        catch (error) {
-            throw error;
-        }
-    }
-
-    public async addFoodCategory(payload: IFood): Promise<IFood> {
+    public async addItem(payload: IFood): Promise<IFood> {
         try {
             return await this.post(payload);
         }
@@ -47,9 +37,19 @@ class FoodService extends DbService<IFood> implements IFoodService<IFood> {
         }
     }
 
-    public async updateFoodCategory(id: number, payload: IFood): Promise<IFood | null> {
+    public async updateItem(id: number, payload: IFood): Promise<IFood | null> {
         try {
             return await this.put(id, payload);
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+
+    public async deleteItem(id: number): Promise<string> {
+        try {
+            const deletedFood = await this.deleteById(id);
+            return deletedFood!.name;
         }
         catch (error) {
             throw error;

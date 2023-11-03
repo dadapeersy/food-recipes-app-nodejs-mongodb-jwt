@@ -31,7 +31,6 @@ abstract class DbService<Type> {
         catch (error) {
             throw error;
         }
-
     }
 
     protected async getAllByPage(page: string, limit: string, itemId?: string): Promise<Page<Type>> {
